@@ -60,18 +60,9 @@ export default function Home() {
 
   const createAccount = async() => {
     if(bank){
-      // //if there account is already exist
-      // const provider = new ethers.providers.Web3Provider(ethWallet);
-      // const signer = provider.getSigner();
-      // if(bank.account(signer.getAddress())){
-      //   alert("Account already exist");
-      //   return;
-      // }else{
         await bank.creatAccount();
         console.log("Account created");
         getBalance();
-      // }
-      
     }
   }
 
