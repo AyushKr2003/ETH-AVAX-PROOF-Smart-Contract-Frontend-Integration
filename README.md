@@ -26,8 +26,8 @@ Before you begin, ensure you have the following installed on your machine:
 1. Clone the repository:
 
     ```bash
-    git clone https://github.com/your-username/banking-dapp.git
-    cd banking-dapp
+    git clone https://github.com/AyushKr2003/ETH-AVAX-PROOF-Smart-Contract-Frontend-Integration.git
+    cd ETH-AVAX-PROOF-Smart-Contract-Frontend-Integration
     ```
 
 2. Install Hardhat:
