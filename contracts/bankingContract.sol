@@ -5,7 +5,7 @@ import "hardhat/console.sol";
 
 contract BankingContract{
     mapping (address => bool) public account; 
-    mapping (address => uint) public balance;
+    mapping (address => uint) private balance;
 
 
     modifier onlyUsers(){
@@ -19,7 +19,7 @@ contract BankingContract{
     }
 
     function deposit( uint _value)public onlyUsers returns(bool) {
-        assert(balance[msg.sender] + _value >= _value); //
+        assert(balance[msg.sender] + _value >= _value); 
         balance[msg.sender]+= _value;
         return true;
     }
