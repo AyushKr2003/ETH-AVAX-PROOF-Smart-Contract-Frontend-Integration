@@ -8,7 +8,10 @@ contract form {
         string name ;
         uint age ;
         string post ;
-    } 
+    }
+    
+    mapping (address=> details) person_details;
+
     constructor() {
         owner = msg.sender;
     }
@@ -17,8 +20,6 @@ contract form {
         require(owner == msg.sender, "only can call this function");
         _;
     }
-
-    mapping (address=> details) person_details;
 
     function setDetails(string memory _name,uint _age,string memory _post) public {
         person_details[msg.sender].name = _name;
