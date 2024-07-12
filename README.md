@@ -1,15 +1,7 @@
-# Banking DApp
+# Personal Details Form on Ethereum
 
-This project is a decentralized banking application (DApp) built on the Ethereum blockchain. It allows users to create accounts, deposit and withdraw funds, and transfer funds to other accounts. The frontend is built with React and uses the Ethers.js library to interact with the smart contract deployed on the Ethereum network.
+This project is a simple decentralized application (dApp) for storing and retrieving personal details on the Ethereum blockchain. The project includes a smart contract written in Solidity, deployment script using Hardhat, and a React frontend to interact with the smart contract.
 
-## Table of Contents
-
-- [Prerequisites](#prerequisites)
-- [Installation](#installation)
-- [Smart Contract](#smart-contract)
-- [Frontend](#frontend)
-- [Usage](#usage)
-- [License](#license)
 
 ## Prerequisites
 
@@ -56,45 +48,69 @@ Before you begin, ensure you have the following installed on your machine:
 
 ### Frontend
 
-1. Navigate to the `pages` directory:
-
-    ```bash
-    cd pages
-    ```
-
-2. Install dependencies:
+1. Install dependencies:
 
     ```bash
     npm install
     ```
 
-3. Start the development server:
+2. Start the development server:
 
     ```bash
     npm run dev
     ```
+    Open http://localhost:3007 to view it in your browser.
+
+## Deployment
+### Deploy the contract locally :
+   - First, start a local Hardhat node in one terminal:
+
+        ```bash
+        npx hardhat node
+        ```
+   - Then, in another terminal, run the deployment script:
+    
+        ```bash
+        npx hardhat run --network localhost scripts/deploy.js
+        ```
+   - At last, start the frontend application in a new terminal:
+        ```bash
+        npm run dev
+        ```
+        Open http://localhost:3007 in your browser to view the application.    
+
+## Project Structure
+- `contracts/`: Contains the Solidity smart contract.
+- `scripts/`: Contains the deployment script.
+- `artifacts/`: Generated artifacts after contract compilation.
+- `pages/`: Contains the React frontend code.
+
+
+## Interacting with the dApp
+
+### Connect Wallet
+Click on the `Connect Metamask` button to connect your Metamask wallet to the dApp.
+### Set Details
+Fill in your name, age, and post in the input fields.
+Click the `Set Details` button to store your details on the blockchain.
+### Get Details
+Click the `Get Details` button to retrieve your details from the blockchain.
+### Get Details by Address
+Enter an account address in the `Address` input field.
+Click the "Get Details by address" button to retrieve the details stored under that address (only accessible by the contract owner).
+### Clear Details
+Click the `Clear Details` button to clear the displayed details.
+
 
 ## Smart Contract
-
 The smart contract is written in Solidity and provides the following functionalities:
 
-- Create an account
-- Deposit funds
-- Withdraw funds
-- Transfer funds to another account
-- Get the balance of the account
+- Set personal details (name, age, post) for the user.
+- Get personal details of the user.
+- Get personal details of any user by the contract owner.
 
 ## Frontend
-The frontend is built using React and Ethers.js. It interacts with the deployed smart contract and provides a user interface for users to perform various banking operations.
-
-### Key Files
-- `pages/index.js`: Main React component.
-- `artifacts/contracts/bankingContract.sol/BankingContract.json`: ABI of the smart contract.
-
-## Usage
-- Make sure your Ethereum wallet (MetaMask) is connected and set up with the appropriate network.
-- Run the smart contract and the frontend as described in the Installation section.
-- Use the web interface to create an account, deposit funds, withdraw funds, and transfer funds.
+The frontend is built using React and Ethers.js. It interacts with the deployed smart contract and provides a user interface for users to set and retrieve their personal details.
 
 ## License
 This project is licensed under the MIT License.

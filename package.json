@@ -4,7 +4,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "set PORT=3005  && next dev",
+    "dev": "set PORT=3007  && next dev",
     "build": "next build",
     "start": "next start",
     "lint": "next lint"

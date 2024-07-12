@@ -1,16 +1,24 @@
 import {useState, useEffect} from "react";
 import {ethers} from "ethers";
-import bank_abi from "../artifacts/contracts/bankingContract.sol/BankingContract.json";
+import Form_abi from "../artifacts/contracts/form.sol/form.json";
 
 export default function Home() {
   const [ethWallet, setEthWallet] = useState(undefined);
   const [account, setAccount] = useState(undefined);
-  const [bank, setBank] = useState(undefined);
-  const [balance, setBalance] = useState(undefined);
+  const [formContract, setformContract] = useState(undefined);
+  const [Name, setName] = useState(undefined);
+  const [age, setAge] = useState(undefined);
+  const [post, setPost] = useState(undefined);
   const [address, setAddress] = useState(undefined);
+  const [details, setDetail] = useState({
+    name: '',
+    age: '',
+    post: '',
+  });
+
   
   const contractAddress = "0x5FbDB2315678afecb367f032d93F642f64180aa3";
-  const bankABI = bank_abi.abi;  
+  const formABI = Form_abi.abi;  
 
   const getWallet = async()=> {
     if(window.ethereum) {
@@ -41,59 +49,71 @@ export default function Home() {
     const accounts = await ethWallet.request({method: "eth_requestAccounts"});
     handleAccount(accounts);
 
-    getBankContract();
+    getFormContract();
   }
 
-  const getBankContract = () => {
+  const getFormContract = () => {
     const provider = new ethers.providers.Web3Provider(ethWallet);
     const signer = provider.getSigner();
-    const bankContract = new ethers.Contract(contractAddress, bankABI, signer);
-    setBank(bankContract);
+    const FormContract = new ethers.Contract(contractAddress, formABI, signer);
+    setformContract(FormContract);
   }
 
-  const getBalance = async() => {
-    if(bank){
-      setBalance(Number((await bank.getBalance())));
-      // console.log("Balance: ", balance);
-    }
+
+  const onChnageHandleName = ()=> {
+    setName(event.target.value);
   }
 
-  const createAccount = async() => {
-    if(bank){
-        await bank.creatAccount();
-        console.log("Account created");
-        getBalance();
-    }
+  const onChnageHandleAge = ()=> {
+    setAge(event.target.value);
   }
 
-  const deposit = async() => {
-    if (bank) {
-      await bank.deposit(100);
-      getBalance();
-    }
+  const onChnageHandlePost = ()=> {
+    setPost(event.target.value);
   }
 
-  const withdraw = async() => {
-    if (bank) {
-      await bank.withdraw(100);
-      getBalance();
-    }
-  }
-
-  const onChnageHandle = ()=> {
+  const onChnageHandleAdd = ()=> {
     setAddress(event.target.value);
   }
 
-  const transfer = async() => {
-    console.log(address);
-    if(bank){
-      
-      await bank.transfer(address,100);
-      
-      console.log(address);
+
+  const setDetails = async() => {
+    if(formContract){
+        await formContract.setDetails(String(Name), age, String(post));
+        alert("Details set");
     }
   }
 
+
+  const getDetails = async () => {
+    if (formContract) {
+        const details = await formContract.getDetails();
+        setDetail({
+          name: details[0],
+          age: details[1].toString(), 
+          post: details[2],
+        });
+    }
+  }
+
+  const personalDetails = async() => {
+    if(formContract){
+      const details = await formContract.personDetails(address);
+      setDetail({
+        name: details[0],
+        age: details[1].toString(), 
+        post: details[2],
+      });
+    }
+  }
+
+  const clearDetails = async() => {
+    setDetail({
+      name: '',
+      age: '',
+      post: '',
+    });
+  }
   const init = () => {
     if(!ethWallet){
       return <p>Please install Metamask</p>
@@ -104,30 +124,31 @@ export default function Home() {
     }
 
     
-    const provider = new ethers.providers.Web3Provider(ethWallet);
-    const signer = provider.getSigner();
-    if(bank.account(signer.getAddress())){
-      getBalance();
-    }
-
-    
-
     return (
       <div >
-        <h1>Banking Contract</h1>
+        <h1>Personal Details Form</h1>
         <p>Account: {account}</p>
-        <button onClick={getBalance}>Show Balance</button>
-        <p>Balance: {balance}</p>
-        <button onClick={createAccount} >Create Account</button>
-        <button onClick={deposit} >Deposit 100</button>
-        <button onClick={withdraw} >Withdraw 100</button>
+
         <label>
-        Account Address: <input name="address" value = {address} onChange={onChnageHandle} />
-        <button onClick={transfer}>Transfer 100</button>
-        <p>{address}</p>
-      </label>
+        Name: <input name="Name" value = {Name} onChange={onChnageHandleName} />
+        Age: <input name="age" value = {age} onChange={onChnageHandleAge} />
+        Post: <input name="post" value = {post} onChange={onChnageHandlePost} />
+        <button onClick={setDetails}>Set Details</button>
+        </label>
+        <br></br>
+        <button onClick={getDetails}>Get Details</button>
+        <label>
+        Address: <input name="address" value = {address} onChange={onChnageHandleAdd} />
+        </label>
+        <button onClick={personalDetails}>Get Details by address</button>
+        <p>Details:-</p>
+        <p>Name: {details.name}</p>
+        <p>Age: {details.age}</p>
+        <p>Post: {details.post}</p>
+        <button onClick={clearDetails}>Clear Details</button>
       </div>
     )
+
   }
 
   useEffect(() => {
